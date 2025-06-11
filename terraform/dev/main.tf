@@ -11,5 +11,5 @@ module "network" {
 
   network_name                   = "luca-ledger-dev-vpc-network"
   subnet_name                    = "luca-ledger-dev-subnet"
-  subnet_ip                      = "10.1.1.1/24"
+  subnet_ip                      = "10.1.1.0/24"
 }
