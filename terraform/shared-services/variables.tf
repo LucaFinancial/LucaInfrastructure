@@ -10,20 +10,14 @@ variable "region" {
   default     = "us-central1"
 }
 
-variable "network_name" {
+variable "prod_host" {
   description = ""
   type        = string
-  default     = "luca-ledger-shared-services-vpc-network"
+  default     = "lucaledger.app"
 }
 
-variable "subnet_name" {
+variable "dev_host" {
   description = ""
   type        = string
-  default     = "luca-ledger-shared-services-subnet"
-}
-
-variable "subnet_ip" {
-  description = ""
-  type        = string
-  default     = "10.9.9.0/24"
+  default     = "dev.lucaledger.app"
 }
