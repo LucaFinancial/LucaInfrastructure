@@ -33,20 +33,3 @@ module "sql" {
 
   depends_on            = [module.network]
 }
-
-module "storage" {
-  source          = "../modules/storage"
-
-  project_id      = "luca-ledger-prod"
-  bucket_name     = "luca-ledger-prod-web-app-bucket"
-  region          = "us-central1"
-}
-
-module "iam" {
-  source          = "../modules/iam"
-
-  project_id      = "luca-ledger-prod"
-  bucket_name     = "luca-ledger-prod-web-app-bucket"
-
-  depends_on      = [module.storage]
-}
