@@ -13,11 +13,6 @@ variable "network_name" {
   description = "The name of the VPC network"
 }
 
-variable "network_self_link" {
-  type        = string
-  description = "The self-link URL of the VPC network"
-}
-
 variable "subnet_name" {
   type        = string
   description = "The name of the subnet within the VPC"
@@ -41,14 +36,6 @@ variable "db_instance_name" {
 variable "db_name" {
   type        = string
   description = "The name of the initial database to create"
-}
-
-variable "authorized_networks" {
-  description = "List of external networks authorized to connect to the database"
-  type = list(object({
-    name  = string
-    value = string
-  }))
 }
 
 variable "db_admin_username" {
@@ -76,4 +63,12 @@ variable "db_user_password" {
 variable "deletion_protection" {
   type        = bool
   description = "Whether to enable deletion protection on the Cloud SQL instance"
+}
+
+variable "authorized_networks" {
+  description = "List of external networks authorized to connect to the database"
+  type = list(object({
+    name  = string
+    value = string
+  }))
 }
