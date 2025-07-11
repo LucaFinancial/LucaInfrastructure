@@ -1,5 +1,10 @@
 variable "project_id" {
-  description = "The GCP project ID"
+  description = "The ID of the GCP project"
+  type        = string
+}
+
+variable "region" {
+  description = "The region where resources will be deployed"
   type        = string
 }
 
@@ -8,76 +13,66 @@ variable "network_name" {
   type        = string
 }
 
+variable "network_self_link" {
+  description = "The self-link URL of the VPC network"
+  type        = string
+}
+
 variable "subnet_name" {
-  description = "The name of the subnet"
+  description = "The name of the subnet within the VPC"
   type        = string
 }
 
 variable "subnet_ip" {
-  description = "The IP range of the subnet"
-  type        = string
-}
-
-variable "region" {
-  description = "The GCP region"
-  type        = string
-}
-
-variable "region" {
-  description = "The GCP region"
+  description = "The IP CIDR range of the subnet (e.g., 10.0.0.0/24)"
   type        = string
 }
 
 variable "db_version" {
-  description = "The database version (e.g., POSTGRES_13)"
+  description = "The Cloud SQL database version (e.g., POSTGRES_13)"
   type        = string
 }
 
 variable "db_instance_name" {
-  description = "The name of the database instance"
+  description = "The name to assign to the Cloud SQL instance"
   type        = string
 }
 
 variable "db_name" {
-  description = "The name of the database"
+  description = "The name of the initial database to create"
   type        = string
 }
 
 variable "authorized_networks" {
-  description = "List of authorized networks for the Cloud SQL instance"
+  description = "List of external networks authorized to connect to the database"
   type = list(object({
     name  = string
     value = string
   }))
 }
 
-variable "network_self_link" {
-  description = "The self link of the network"
-  type        = string
-}
-
 variable "db_admin_username" {
-  description = "The username for the database"
+  description = "The admin username for the Cloud SQL instance"
   type        = string
 }
 
 variable "db_admin_password" {
-  description = "Password for the Looker Studio database user"
+  description = "The password for the database admin user"
   type        = string
   sensitive   = true
 }
 
 variable "db_user_username" {
-  description = "The username of the cloud functions user"
+  description = "The username for the application-level database user"
   type        = string
 }
 
 variable "db_user_password" {
-  description = "The password for the cloud functions user"
+  description = "The password for the application-level database user"
   type        = string
 }
 
 variable "deletion_protection" {
-  description = "Boolean to indicate whether or not to enable or disable deletion protection on the instance"
+  description = "Whether to enable deletion protection on the Cloud SQL instance"
   type        = bool
 }
