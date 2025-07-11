@@ -1,35 +1,29 @@
-provider "google" {
-  project   = "luca-ledger-dev"
-  region    = "us-central1"
-}
+module "core" {
+  source = "../modules/core"
 
-module "network" {
-  source          = "../modules/network"
-
-  project_id      = "luca-ledger-dev"
-  region          = "us-central1"
-
-  network_name    = "luca-ledger-dev-vpc-network"
-  subnet_name     = "luca-ledger-dev-subnet"
-  subnet_ip       = "10.1.1.0/24"
-}
-
-module "sql" {
-  source                = "../modules/sql"
-
-  region                = "us-central1"
-
-  db_instance_name      = "luca-ledger-dev-sql"
-  db_version            = "POSTGRES_16"
-  db_name               = "ledger"
-  deletion_protection   = true
-  network_self_link     = module.network.network_self_link
-
+  project_id            = var.project_id
+  region                = var.region
+  
+  network_name          = var.network_name
+  subnet_name           = var.subnet_name
+  subnet_ip             = var.subnet_ip
+  
+  db_version            = var.db_version
+  db_instance_name      = var.db_instance_name
+  db_name               = var.db_name
+  
   db_admin_username     = var.db_admin_username
   db_admin_password     = var.db_admin_password
+  
   db_user_username      = var.db_user_username
   db_user_password      = var.db_user_password
+  
+  deletion_protection   = var.deletion_protection
   authorized_networks   = var.authorized_networks
-
-  depends_on            = [module.network]
 }
+
+#module "web-app-common" {}
+
+#module "web-app-gcs" {}
+
+#module "web-app-cloud-run" {}
