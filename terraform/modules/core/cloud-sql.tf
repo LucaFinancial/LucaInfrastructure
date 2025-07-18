@@ -9,7 +9,7 @@ resource "google_sql_database_instance" "db_instance" {
 
     ip_configuration {
       ipv4_enabled    = true
-      private_network = var.network_self_link
+      private_network = google_compute_network.vpc_network.self_link
       enable_private_path_for_google_cloud_services = true
 
       dynamic "authorized_networks" {
