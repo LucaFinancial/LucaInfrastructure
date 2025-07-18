@@ -25,7 +25,13 @@ set +a
 # Validate required vars
 : "${GCP_PROJECT?GCP_PROJECT missing in env file}"
 : "${TF_STATE_BUCKET?TF_STATE_BUCKET missing in env file}"
+: "${TF_STATE_PATH?TF_STATE_PATH missing in env file}"
 : "${REGION?REGION missing in env file}"
+
+TEMPLATE_DIR="${SCRIPT_DIR}/templates"
+ENV_DIR="${SCRIPT_DIR}/../${ENV}"
+cp -r "${TEMPLATE_DIR}" "${ENV_DIR}"
+echo "Created environment directory: ${ENV_DIR}"
 
 # Ensure gcloud is using the correct project
 current_project=$(gcloud config get-value project 2>/dev/null || true)
@@ -44,12 +50,7 @@ else
   echo "Bucket gs://${TF_STATE_BUCKET} already exists"
 fi
 
-# Generate terraform.tfvars at repo root
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-TF_DIR="${REPO_ROOT}/terraform"
-mkdir -p "${TF_DIR}"
-
-TFVARS_FILE="${TF_DIR}/terraform.tfvars"
+TFVARS_FILE="${ENV_DIR}/terraform.tfvars"
 
 cat > "${TFVARS_FILE}" <<EOF
 bucket_name = "${TF_STATE_BUCKET}"
@@ -60,17 +61,17 @@ EOF
 echo "Wrote ${TFVARS_FILE} with bucket_name, project_id, and region variables"
 
 # Generate backend.tf for remote state
-BACKEND_FILE="${TF_DIR}/backend.tf"
+BACKEND_FILE="${ENV_DIR}/backend.tf"
 
 cat > "${BACKEND_FILE}" <<EOF
 terraform {
   backend "gcs" {
     bucket = "${TF_STATE_BUCKET}"
-    prefix = "terraform/state"
+    prefix = "${TF_STATE_PATH}"
   }
 }
 EOF
 
 echo "Wrote ${BACKEND_FILE} configuring the GCS backend"
 
-echo "Init completed: files written to ${TF_DIR}"
+echo "Init completed: files written to ${ENV_DIR}"
