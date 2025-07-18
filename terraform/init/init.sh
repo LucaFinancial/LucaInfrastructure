@@ -53,9 +53,26 @@ fi
 TFVARS_FILE="${ENV_DIR}/terraform.tfvars"
 
 cat > "${TFVARS_FILE}" <<EOF
-bucket_name = "${TF_STATE_BUCKET}"
-project_id  = "${GCP_PROJECT}"
-region      = "${REGION}"
+env          = "${ENV}"
+project_id   = "${GCP_PROJECT}"
+region       = "${REGION}"
+
+network_name    = "${GCP_PROJECT}-vpc-network"
+subnet_name     = "${GCP_PROJECT}-subnet"
+subnet_ip       = "10.0.0.0/24"
+
+db_instance_name      = "${GCP_PROJECT}-sql"
+db_version            = "POSTGRES_16"
+db_name               = "ledger"
+deletion_protection   = false
+
+db_admin_username     = "pg-admin"
+db_admin_password     = ""
+
+db_user_username      = "pg-user"
+db_user_password      = ""
+
+authorized_networks   = []
 EOF
 
 echo "Wrote ${TFVARS_FILE} with bucket_name, project_id, and region variables"
