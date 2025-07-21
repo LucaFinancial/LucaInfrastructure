@@ -45,6 +45,15 @@ if ! gsutil ls -b "gs://${TF_STATE_BUCKET}" >/dev/null 2>&1; then
   gsutil mb -p "${GCP_PROJECT}" -l "${REGION}" "gs://${TF_STATE_BUCKET}"
   if [[ "${ENABLE_VERSIONING:-false}" == "true" ]]; then
     gsutil versioning set on "gs://${TF_STATE_BUCKET}"
+    
+    # Set lifecycle config if file exists
+    LIFECYCLE_FILE="${SCRIPT_DIR}/lifecycle-config.json"
+    if [[ -f "${LIFECYCLE_FILE}" ]]; then
+      echo "Setting lifecycle config from ${LIFECYCLE_FILE}"
+      gsutil lifecycle set "${LIFECYCLE_FILE}" "gs://${TF_STATE_BUCKET}"
+    else
+      echo "WARNING: ${LIFECYCLE_FILE} not found; skipping lifecycle config"
+    fi
   fi
 else
   echo "Bucket gs://${TF_STATE_BUCKET} already exists"
