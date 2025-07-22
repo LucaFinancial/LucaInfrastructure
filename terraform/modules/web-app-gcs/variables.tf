@@ -27,3 +27,13 @@ variable "bucket_name" {
   description = "Name of the GCS bucket to deploy the app to"
   type        = string
 }
+
+variable "service_name_gcs" {
+  description = "The name of the GCS service"
+  type        = string
+}
+
+variable "ssl_domains" {
+  description = "A list of domains for the managed SSL certificate"
+  type        = list(string)
+}
