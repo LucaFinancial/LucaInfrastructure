@@ -22,8 +22,17 @@ module "core" {
   authorized_networks   = var.authorized_networks
 }
 
-#module "web-app-common" {}
+module "web-app-gcs" {
+  source = "../modules/web-app-gcs"
 
-#module "web-app-gcs" {}
+  env           = var.env
+  project_id    = var.project_id
+  region        = var.region
+
+  service_account_name_gcs = "cloud-build-sa-gcs"
+
+  branch_pattern  = ".*"
+  bucket_name     = "luca-ledger-dev-web-app"
+}
 
 #module "web-app-cloud-run" {}
