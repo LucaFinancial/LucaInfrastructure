@@ -37,5 +37,3 @@ module "web-app-gcs" {
 
   ssl_domains = ["lucaledger.app"]
 }
-
-#module "web-app-cloud-run" {}
