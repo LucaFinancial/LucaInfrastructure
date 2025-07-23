@@ -1,0 +1,24 @@
+env          = ""
+project_id   = ""
+region       = "us-central1"
+
+network_name    = ""
+subnet_name     = ""
+subnet_ip       = "10.0.0.0/24"
+
+db_instance_name      = ""
+db_version            = "POSTGRES_16"
+db_name               = ""
+deletion_protection   = false
+
+db_admin_username     = "pg-admin"
+db_admin_password     = ""
+
+db_user_username      = "pg-user"
+db_user_password      = ""
+
+authorized_networks   = []
+
+gcs_web_app_bucket_name  = "luca-ledger-dev-web-app"
+gcs_web_app_service_name = "luca-ledger-dev-web-app-service"
+ssl_domains  = ["dev.lucaledger.app"]
