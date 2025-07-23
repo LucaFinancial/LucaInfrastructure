@@ -21,9 +21,3 @@ module "core" {
   deletion_protection   = var.deletion_protection
   authorized_networks   = var.authorized_networks
 }
-
-#module "web-app-common" {}
-
-#module "web-app-gcs" {}
-
-#module "web-app-cloud-run" {}

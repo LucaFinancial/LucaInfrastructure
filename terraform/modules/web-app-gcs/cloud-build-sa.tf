@@ -14,6 +14,8 @@ resource "google_storage_bucket_iam_member" "cloudbuild_sa_object_admin" {
   bucket  = var.bucket_name
   role    = "roles/storage.objectAdmin"
   member  = "serviceAccount:${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
+
+  depends_on = [google_storage_bucket.luca_ledger_web_app_bucket]
 }
 
 resource "google_project_iam_member" "cloudbuild_sa_builder" {
