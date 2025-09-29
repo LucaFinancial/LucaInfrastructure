@@ -1,3 +1,8 @@
+variable "env" {
+  description = "The environment the resources are being deployed to"
+  type        = string
+}
+
 variable "project_id" {
   description = "GCP project ID where the trigger is created"
   type        = string
@@ -5,6 +10,11 @@ variable "project_id" {
 
 variable "region" {
   description = "GCP region of the repository connection (e.g., us-central1)"
+  type        = string
+}
+
+variable "service_account_name_gcs" {
+  description = "Name of the GCS Cloud Build Serivce Account"
   type        = string
 }
 
@@ -18,7 +28,12 @@ variable "bucket_name" {
   type        = string
 }
 
-variable "env" {
-  description = "The environment the resources are being deployed to"
+variable "service_name_gcs" {
+  description = "The name of the GCS service"
   type        = string
+}
+
+variable "ssl_domains" {
+  description = "A list of domains for the managed SSL certificate"
+  type        = list(string)
 }

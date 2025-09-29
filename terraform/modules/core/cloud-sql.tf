@@ -33,6 +33,8 @@ resource "google_sql_database_instance" "db_instance" {
   }
 
   deletion_protection = var.deletion_protection
+
+  depends_on = [google_compute_network_peering_routes_config.export_routes]
 }
 
 resource "google_sql_database" "db_name" {

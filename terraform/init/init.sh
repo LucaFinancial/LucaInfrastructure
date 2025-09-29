@@ -25,7 +25,13 @@ set +a
 # Validate required vars
 : "${GCP_PROJECT?GCP_PROJECT missing in env file}"
 : "${TF_STATE_BUCKET?TF_STATE_BUCKET missing in env file}"
+: "${TF_STATE_PATH?TF_STATE_PATH missing in env file}"
 : "${REGION?REGION missing in env file}"
+
+TEMPLATE_DIR="${SCRIPT_DIR}/templates"
+ENV_DIR="${SCRIPT_DIR}/../${ENV}"
+cp -r "${TEMPLATE_DIR}" "${ENV_DIR}"
+echo "Created environment directory: ${ENV_DIR}"
 
 # Ensure gcloud is using the correct project
 current_project=$(gcloud config get-value project 2>/dev/null || true)
@@ -39,38 +45,59 @@ if ! gsutil ls -b "gs://${TF_STATE_BUCKET}" >/dev/null 2>&1; then
   gsutil mb -p "${GCP_PROJECT}" -l "${REGION}" "gs://${TF_STATE_BUCKET}"
   if [[ "${ENABLE_VERSIONING:-false}" == "true" ]]; then
     gsutil versioning set on "gs://${TF_STATE_BUCKET}"
+    
+    # Set lifecycle config if file exists
+    LIFECYCLE_FILE="${SCRIPT_DIR}/lifecycle-config.json"
+    if [[ -f "${LIFECYCLE_FILE}" ]]; then
+      echo "Setting lifecycle config from ${LIFECYCLE_FILE}"
+      gsutil lifecycle set "${LIFECYCLE_FILE}" "gs://${TF_STATE_BUCKET}"
+    else
+      echo "WARNING: ${LIFECYCLE_FILE} not found; skipping lifecycle config"
+    fi
   fi
 else
   echo "Bucket gs://${TF_STATE_BUCKET} already exists"
 fi
 
-# Generate terraform.tfvars at repo root
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-TF_DIR="${REPO_ROOT}/terraform"
-mkdir -p "${TF_DIR}"
-
-TFVARS_FILE="${TF_DIR}/terraform.tfvars"
+TFVARS_FILE="${ENV_DIR}/terraform.tfvars"
 
 cat > "${TFVARS_FILE}" <<EOF
-bucket_name = "${TF_STATE_BUCKET}"
-project_id  = "${GCP_PROJECT}"
-region      = "${REGION}"
+env          = "${ENV}"
+project_id   = "${GCP_PROJECT}"
+region       = "${REGION}"
+
+network_name    = "${GCP_PROJECT}-vpc-network"
+subnet_name     = "${GCP_PROJECT}-subnet"
+subnet_ip       = "10.0.0.0/24"
+
+db_instance_name      = "${GCP_PROJECT}-sql"
+db_version            = "POSTGRES_16"
+db_name               = "ledger"
+deletion_protection   = false
+
+db_admin_username     = "pg-admin"
+db_admin_password     = ""
+
+db_user_username      = "pg-user"
+db_user_password      = ""
+
+authorized_networks   = []
 EOF
 
 echo "Wrote ${TFVARS_FILE} with bucket_name, project_id, and region variables"
 
 # Generate backend.tf for remote state
-BACKEND_FILE="${TF_DIR}/backend.tf"
+BACKEND_FILE="${ENV_DIR}/backend.tf"
 
 cat > "${BACKEND_FILE}" <<EOF
 terraform {
   backend "gcs" {
     bucket = "${TF_STATE_BUCKET}"
-    prefix = "terraform/state"
+    prefix = "${TF_STATE_PATH}"
   }
 }
 EOF
 
 echo "Wrote ${BACKEND_FILE} configuring the GCS backend"
 
-echo "Init completed: files written to ${TF_DIR}"
+echo "Init completed: files written to ${ENV_DIR}"
