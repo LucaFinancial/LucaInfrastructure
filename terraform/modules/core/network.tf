@@ -23,6 +23,8 @@ resource "google_service_networking_connection" "default" {
   network                 = google_compute_network.vpc_network.self_link
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
+
+  depends_on = [google_compute_global_address.private_ip_range]
 }
 
 resource "google_compute_network_peering_routes_config" "export_routes" {

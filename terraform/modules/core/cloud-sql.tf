@@ -9,7 +9,7 @@ resource "google_sql_database_instance" "db_instance" {
 
     ip_configuration {
       ipv4_enabled    = true
-      private_network = var.network_self_link
+      private_network = google_compute_network.vpc_network.self_link
       enable_private_path_for_google_cloud_services = true
 
       dynamic "authorized_networks" {
@@ -33,6 +33,8 @@ resource "google_sql_database_instance" "db_instance" {
   }
 
   deletion_protection = var.deletion_protection
+
+  depends_on = [google_compute_network_peering_routes_config.export_routes]
 }
 
 resource "google_sql_database" "db_name" {
