@@ -3,31 +3,37 @@ variable "project" {
     type        = string
 }
 
-variable "account_id" {
-    description = "Service account id (unique within the project), e.g. 'build-sa'"
+variable "environment" {
+    description = "Environment name (e.g., dev, prod)"
     type        = string
+    validation {
+        condition     = contains(["dev", "prod"], var.environment)
+        error_message = "Environment must be one of: dev or prod."
+    }
 }
 
-variable "display_name" {
-    description = "Human readable display name for the service account. Defaults to account_id when empty."
+variable "service_name" {
+    description = "Name of the service this SA is for (e.g., webapp, api, worker)"
     type        = string
-    default     = ""
+    validation {
+        condition     = can(regex("^[a-z][a-z0-9-]*[a-z0-9]$", var.service_name))
+        error_message = "Service name must start with a letter, contain only lowercase letters, numbers, and hyphens, and end with a letter or number."
+    }
+}
+
+variable "team" {
+    description = "Team responsible for this service account"
+    type        = string
 }
 
 variable "description" {
-    description = "Optional description for the service account"
+    description = "Optional custom description for the service account. If not provided, a default will be generated."
     type        = string
-    default     = "Service account created by terraform module"
+    default     = null
 }
 
-variable "disabled" {
-    description = "Whether the service account should be created disabled"
-    type        = bool
-    default     = false
-}
-
-variable "labels" {
-    description = "Optional labels to attach to the service account"
+variable "additional_labels" {
+    description = "Additional labels to merge with the default organizational labels"
     type        = map(string)
     default     = {}
 }
