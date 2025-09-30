@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-# Strict mode
+# Minimal Terraform GCS backend initialization script
+# Creates GCS state bucket and generates backend.tf in current directory
+
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then
   echo "Usage: $0 <env>" >&2
+  echo "Example: $0 dev" >&2
   exit 1
 fi
 
@@ -17,77 +20,43 @@ if [[ ! -f "${ENV_FILE}" ]]; then
   exit 1
 fi
 
-# Load vars from env file
+# Load environment variables
 set -a
 source "${ENV_FILE}"
 set +a
 
-# Validate required vars
+# Validate required variables
 : "${GCP_PROJECT?GCP_PROJECT missing in env file}"
 : "${TF_STATE_BUCKET?TF_STATE_BUCKET missing in env file}"
 : "${TF_STATE_PATH?TF_STATE_PATH missing in env file}"
 : "${REGION?REGION missing in env file}"
 
-TEMPLATE_DIR="${SCRIPT_DIR}/templates"
-ENV_DIR="${SCRIPT_DIR}/../${ENV}"
-cp -r "${TEMPLATE_DIR}" "${ENV_DIR}"
-echo "Created environment directory: ${ENV_DIR}"
+echo "Initializing Terraform backend for environment: ${ENV}"
+echo "Project: ${GCP_PROJECT}"
+echo "Bucket: gs://${TF_STATE_BUCKET}"
+echo "State path: ${TF_STATE_PATH}"
 
 # Ensure gcloud is using the correct project
 current_project=$(gcloud config get-value project 2>/dev/null || true)
 if [[ "${current_project}" != "${GCP_PROJECT}" ]]; then
+  echo "Setting gcloud project to ${GCP_PROJECT}"
   gcloud config set project "${GCP_PROJECT}" >/dev/null
 fi
 
-# Create bucket if it does not exist
+# Create state bucket if it doesn't exist
 if ! gsutil ls -b "gs://${TF_STATE_BUCKET}" >/dev/null 2>&1; then
-  echo "Creating bucket gs://${TF_STATE_BUCKET} in project ${GCP_PROJECT}"
+  echo "Creating Terraform state bucket: gs://${TF_STATE_BUCKET}"
   gsutil mb -p "${GCP_PROJECT}" -l "${REGION}" "gs://${TF_STATE_BUCKET}"
-  if [[ "${ENABLE_VERSIONING:-false}" == "true" ]]; then
-    gsutil versioning set on "gs://${TF_STATE_BUCKET}"
-    
-    # Set lifecycle config if file exists
-    LIFECYCLE_FILE="${SCRIPT_DIR}/lifecycle-config.json"
-    if [[ -f "${LIFECYCLE_FILE}" ]]; then
-      echo "Setting lifecycle config from ${LIFECYCLE_FILE}"
-      gsutil lifecycle set "${LIFECYCLE_FILE}" "gs://${TF_STATE_BUCKET}"
-    else
-      echo "WARNING: ${LIFECYCLE_FILE} not found; skipping lifecycle config"
-    fi
-  fi
+  
+  # Enable versioning for state file safety
+  echo "Enabling versioning on state bucket"
+  gsutil versioning set on "gs://${TF_STATE_BUCKET}"
 else
-  echo "Bucket gs://${TF_STATE_BUCKET} already exists"
+  echo "State bucket gs://${TF_STATE_BUCKET} already exists"
 fi
 
-TFVARS_FILE="${ENV_DIR}/terraform.tfvars"
-
-cat > "${TFVARS_FILE}" <<EOF
-env          = "${ENV}"
-project_id   = "${GCP_PROJECT}"
-region       = "${REGION}"
-
-network_name    = "${GCP_PROJECT}-vpc-network"
-subnet_name     = "${GCP_PROJECT}-subnet"
-subnet_ip       = "10.0.0.0/24"
-
-db_instance_name      = "${GCP_PROJECT}-sql"
-db_version            = "POSTGRES_16"
-db_name               = "ledger"
-deletion_protection   = false
-
-db_admin_username     = "pg-admin"
-db_admin_password     = ""
-
-db_user_username      = "pg-user"
-db_user_password      = ""
-
-authorized_networks   = []
-EOF
-
-echo "Wrote ${TFVARS_FILE} with bucket_name, project_id, and region variables"
-
-# Generate backend.tf for remote state
-BACKEND_FILE="${ENV_DIR}/backend.tf"
+# Generate backend.tf in current directory
+BACKEND_FILE="./backend.tf"
 
 cat > "${BACKEND_FILE}" <<EOF
 terraform {
@@ -98,6 +67,10 @@ terraform {
 }
 EOF
 
-echo "Wrote ${BACKEND_FILE} configuring the GCS backend"
-
-echo "Init completed: files written to ${ENV_DIR}"
+echo "Generated ${BACKEND_FILE} in current directory"
+echo ""
+echo "Next steps:"
+echo "1. Run 'terraform init' to initialize the backend"
+echo "2. Create your main.tf and other Terraform files as needed"
+echo ""
+echo "Initialization complete!"
