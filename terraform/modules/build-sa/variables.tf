@@ -21,11 +21,6 @@ variable "service_name" {
     }
 }
 
-variable "team" {
-    description = "Team responsible for this service account"
-    type        = string
-}
-
 variable "description" {
     description = "Optional custom description for the service account. If not provided, a default will be generated."
     type        = string
@@ -36,4 +31,10 @@ variable "additional_labels" {
     description = "Additional labels to merge with the default organizational labels"
     type        = map(string)
     default     = {}
+}
+
+variable "additional_roles" {
+    description = "Additional IAM roles to grant beyond the default build roles"
+    type        = list(string)
+    default     = []
 }
