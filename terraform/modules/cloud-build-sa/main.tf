@@ -1,7 +1,8 @@
 locals {
   base_roles = [
     "roles/cloudbuild.builds.builder",
-    "roles/logging.logWriter"
+    "roles/logging.logWriter",
+    "roles/iam.serviceAccountUser"
   ]
 }
 
