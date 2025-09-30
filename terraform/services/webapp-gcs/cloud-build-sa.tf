@@ -12,5 +12,5 @@ module "cloud_build_sa" {
 resource "google_storage_bucket_iam_member" "cloud_build_sa_object_admin" {
   bucket = var.bucket_name
   role   = "roles/storage.objectAdmin"
-  member = module.cloud_build_sa.service_account_email
+  member = "serviceAccount:${module.cloud_build_sa.service_account_email}"
 }
