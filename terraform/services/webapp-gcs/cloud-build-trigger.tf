@@ -3,7 +3,7 @@ resource "google_cloudbuild_trigger" "luca_ledger_web_app_gcs" {
   description = "Trigger for deploying the Luca Ledger web app to GCS (dev)"
   disabled    = false
   project     = var.project_id
-  location    = var.region
+  location    = "global"
   
   included_files = [
     "src/**",
