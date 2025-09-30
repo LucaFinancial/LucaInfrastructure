@@ -1,53 +1,21 @@
-resource "google_service_account" "cloud_build_sa_gcs" {
-  project      = var.project_id
-  account_id   = var.service_account_name_gcs
-  display_name = "Cloud Build Service Account for GCS"
+# Cloud Build Service Account for GCS deployment
+module "cloud_build_sa" {
+  source = "../../modules/cloud-build-sa"
+
+  project_id           = var.project_id
+  service_account_name = var.service_account_name_gcs
+  display_name         = "Cloud Build Service Account for GCS"
+  description          = "Service account for Cloud Build operations deploying to GCS"
+
+  # GCS-specific additional roles beyond the base Cloud Build permissions
+  additional_project_roles = []
 }
 
-resource "google_project_iam_member" "cloud_build_sa_iam_user" {
-  project = var.project_id
-  role   = "roles/iam.serviceAccountUser"
-  member = "serviceAccount:${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
-
-  depends_on = [google_service_account.cloud_build_sa_gcs]
-}
-
+# GCS-specific bucket permissions (handled outside the generic module)
 resource "google_storage_bucket_iam_member" "cloud_build_sa_object_admin" {
-  bucket  = var.bucket_name
-  role    = "roles/storage.objectAdmin"
-  member  = "serviceAccount:${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
+  bucket = var.bucket_name
+  role   = "roles/storage.objectAdmin"
+  member = module.cloud_build_sa.service_account_email
 
-  depends_on = [google_service_account.cloud_build_sa_gcs, google_storage_bucket.luca_ledger_web_app_bucket]
-}
-
-resource "google_project_iam_member" "cloud_build_sa_builder" {
-  project = var.project_id
-  role    = "roles/cloudbuild.builds.builder"
-  member  = "serviceAccount:${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
-
-  depends_on = [google_service_account.cloud_build_sa_gcs]
-}
-
-resource "google_project_iam_member" "cloud_build_sa_logging" {
-  project = var.project_id
-  role    = "roles/logging.logWriter"
-  member  = "serviceAccount:${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
-
-  depends_on = [google_service_account.cloud_build_sa_gcs]
-}
-
-resource "google_project_iam_member" "cloud_build_cloud_run_deployer" {
-  project = var.project_id
-  role    = "roles/run.admin"
-  member  = "serviceAccount:${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
-
-  depends_on = [google_service_account.cloud_build_sa_gcs]
-}
-
-resource "google_project_iam_member" "cloud_build_artifact_registry_writer" {
-  project = var.project_id
-  role    = "roles/artifactregistry.writer"
-  member  = "serviceAccount:${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
-
-  depends_on = [google_service_account.cloud_build_sa_gcs]
+  depends_on = [module.cloud_build_sa, google_storage_bucket.luca_ledger_web_app_bucket]
 }
