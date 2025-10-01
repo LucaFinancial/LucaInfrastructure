@@ -6,11 +6,5 @@ module "cloud_build_sa" {
   display_name         = "Cloud Build Service Account for GCS"
   description          = "Service account for Cloud Build operations deploying to GCS"
 
-  additional_project_roles = []
-}
-
-resource "google_storage_bucket_iam_member" "cloud_build_sa_object_admin" {
-  bucket = var.bucket_name
-  role   = "roles/storage.objectAdmin"
-  member = "serviceAccount:${module.cloud_build_sa.service_account_email}"
+  additional_project_roles = ["roles/storage.objectAdmin"]
 }
