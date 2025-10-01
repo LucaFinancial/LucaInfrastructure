@@ -1,15 +1,13 @@
-module "web-app-gcs" {
-  source = "../modules/web-app-gcs"
+module "webapp-gcs" {
+  source = "../services/webapp-gcs"
 
-  env           = var.env
-  project_id    = var.project_id
-  region        = var.region
+  env           = local.env
+  project_id    = local.project_id
+  region        = local.region
 
-  service_account_name_gcs = "cloud-build-sa-gcs"
-  service_name_gcs  = "luca-ledger-prod-web-app-gcs"
-
-  branch_pattern  = ".*"
-  bucket_name     = "luca-ledger-prod-web-app"
-
-  ssl_domains = ["lucaledger.app"]
+  service_account_name_gcs = local.service_account_name_gcs
+  service_name_gcs         = local.service_name_gcs
+  branch_pattern = local.branch_pattern
+  bucket_name    = local.bucket_name
+  ssl_domains = local.ssl_domains
 }
