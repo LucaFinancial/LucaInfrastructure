@@ -3,10 +3,14 @@ resource "google_compute_global_address" "default" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  name = "${var.service_name_gcs}-ssl-cert"
+  name = "${var.service_name_gcs}-ssl-cert-${substr(md5(join(",", sort(var.ssl_domains))), 0, 8)}"
 
   managed {
     domains = var.ssl_domains
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

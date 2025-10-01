@@ -14,5 +14,5 @@ locals {
   bucket_name = "luca-ledger-devops-dev-webapp"
 
   # SSL/Domain Configuration
-  ssl_domains = ["gcs.dev.lucaledger.app"]
+  ssl_domains = ["gcs.dev.lucaledger.app", "dev.lucaledger.app"]
 }
