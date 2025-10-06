@@ -3,7 +3,7 @@ resource "google_cloudbuild_trigger" "luca_ledger_web_app_gcs" {
   description = "Trigger for deploying the Luca Ledger web app to GCS (dev)"
   disabled    = false
   project     = var.project_id
-  location    = var.region
+  location    = "global"
   
   included_files = [
     "src/**",
@@ -27,7 +27,7 @@ resource "google_cloudbuild_trigger" "luca_ledger_web_app_gcs" {
 
   filename = "cloudbuild.gcs.yml"
   
-  service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account_name_gcs}@${var.project_id}.iam.gserviceaccount.com"
+  service_account = "projects/${var.project_id}/serviceAccounts/${module.cloud_build_sa.service_account_email}"
 
-  depends_on = [google_service_account.cloud_build_sa_gcs, google_storage_bucket.luca_ledger_web_app_bucket]
+  depends_on = [module.cloud_build_sa, google_storage_bucket.luca_ledger_web_app_bucket]
 }

@@ -38,3 +38,7 @@ terraform.rc
 
 *.tfplan
 .terraform.lock.hcl
+
+# Environment files
+terraform/init/env/*.env
+!terraform/init/env/template.env

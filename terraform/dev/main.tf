@@ -1,41 +1,15 @@
-module "core" {
-  source = "../modules/core"
+module "webapp-gcs" {
+  source = "../services/webapp-gcs"
 
-  project_id            = var.project_id
-  region                = var.region
-  
-  network_name          = var.network_name
-  subnet_name           = var.subnet_name
-  subnet_ip             = var.subnet_ip
-  
-  db_version            = var.db_version
-  db_instance_name      = var.db_instance_name
-  db_name               = var.db_name
-  
-  db_admin_username     = var.db_admin_username
-  db_admin_password     = var.db_admin_password
-  
-  db_user_username      = var.db_user_username
-  db_user_password      = var.db_user_password
-  
-  deletion_protection   = var.deletion_protection
-  authorized_networks   = var.authorized_networks
+  env           = local.env
+  project_id    = local.project_id
+  region        = local.region
+
+  service_account_name_gcs = local.service_account_name_gcs
+  service_name_gcs         = local.service_name_gcs
+
+  branch_pattern = local.branch_pattern
+  bucket_name    = local.bucket_name
+
+  ssl_domains = local.ssl_domains
 }
-
-module "web-app-gcs" {
-  source = "../modules/web-app-gcs"
-
-  env           = var.env
-  project_id    = var.project_id
-  region        = var.region
-
-  service_account_name_gcs = "cloud-build-sa-gcs"
-  service_name_gcs  = "luca-ledger-dev-web-app-gcs"
-
-  branch_pattern  = ".*"
-  bucket_name     = "luca-ledger-dev-web-app"
-
-  ssl_domains = ["dev.lucaledger.app"]
-}
-
-#module "web-app-cloud-run" {}
