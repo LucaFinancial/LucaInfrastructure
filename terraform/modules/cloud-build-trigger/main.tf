@@ -9,7 +9,7 @@ locals {
 resource "google_cloudbuild_trigger" "webapp_trigger" {
   name        = var.trigger_name
   description = var.trigger_description
-  disabled    = false
+  disabled    = var.disabled
   project     = var.project_id
   location    = var.region
   

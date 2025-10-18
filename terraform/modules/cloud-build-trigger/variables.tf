@@ -1,3 +1,8 @@
+variable "env" {
+  description = "The environment the resources are being deployed to"
+  type        = string
+}
+
 variable "project_id" {
   description = "GCP project ID where the trigger is created"
   type        = string
