@@ -8,11 +8,12 @@ locals {
   service_name_gcs         = "luca-ledger-devops-dev-webapp-gcs"
 
   # Build Configuration
-  branch_pattern = ".*"
+  branch_pattern  = ".*"
+  trigger_name    = "luca-ledger-dev-web-app-trigger-gcs"
 
   # Storage
   bucket_name = "luca-ledger-devops-dev-webapp"
 
   # SSL/Domain Configuration
-  ssl_domains = ["gcs.dev.lucaledger.app", "dev.lucaledger.app"]
+  ssl_domains = ["gcs-dev.lucaledger.app", "dev.lucaledger.app"]
 }
