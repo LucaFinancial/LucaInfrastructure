@@ -3,15 +3,15 @@ output "repository_url" {
   value = "https://${var.region}-docker.pkg.dev/${var.project_id}/${var.repository_id}"
 }
 
-output "cloud_build_trigger_id" {
-  description = "The ID of the Cloud Build trigger"
-  value = module.cloud_build_trigger.trigger_id
-}
+#output "cloud_build_trigger_id" {
+  #description = "The ID of the Cloud Build trigger"
+  #value = module.cloud_build_trigger.trigger_id
+#}
 
-output "cloud_build_trigger_name" {
-  description = "The name of the Cloud Build trigger"
-  value = module.cloud_build_trigger.trigger_name
-}
+#output "cloud_build_trigger_name" {
+  #description = "The name of the Cloud Build trigger"
+  #value = module.cloud_build_trigger.trigger_name
+#}
 
 output "cloud_build_sa_email" {
   description = "The email of the Cloud Build service account"

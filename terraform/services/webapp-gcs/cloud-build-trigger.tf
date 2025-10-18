@@ -10,7 +10,7 @@ resource "google_cloudbuild_trigger" "luca_ledger_web_app_gcs" {
     "package.json",
     "vite.config.*",
     "yarn.lock",
-    "cloudbuild.yml"
+    "cloudbuild.gcs.yml"
   ]
 
   github {
