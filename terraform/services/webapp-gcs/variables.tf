@@ -28,6 +28,11 @@ variable "bucket_name" {
   type        = string
 }
 
+variable "trigger_name" {
+  description = "Name of the trigger that deploys this service"
+  type        = string
+}
+
 variable "service_name_gcs" {
   description = "The name of the GCS service"
   type        = string
