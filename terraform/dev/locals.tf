@@ -4,5 +4,4 @@ locals {
   region     = "us-central1"
 
   branch_pattern = ".*"
-
 }

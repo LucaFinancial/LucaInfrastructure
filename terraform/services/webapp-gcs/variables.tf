@@ -13,7 +13,12 @@ variable "region" {
   type        = string
 }
 
-variable "service_account_name_gcs" {
+variable "service_name" {
+  description = "The name of the GCS service"
+  type        = string
+}
+
+variable "service_account_name" {
   description = "Name of the GCS Cloud Build Serivce Account"
   type        = string
 }
@@ -25,11 +30,6 @@ variable "branch_pattern" {
 
 variable "bucket_name" {
   description = "Name of the GCS bucket to deploy the app to"
-  type        = string
-}
-
-variable "service_name_gcs" {
-  description = "The name of the GCS service"
   type        = string
 }
 
