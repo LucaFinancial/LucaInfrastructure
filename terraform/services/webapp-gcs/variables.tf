@@ -33,6 +33,11 @@ variable "bucket_name" {
   type        = string
 }
 
+variable "trigger_name" {
+  description = "Name of the trigger that deploys this service"
+  type        = string
+}
+
 variable "ssl_domains" {
   description = "A list of domains for the managed SSL certificate"
   type        = list(string)
