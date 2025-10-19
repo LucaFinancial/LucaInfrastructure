@@ -9,7 +9,6 @@ resource "google_service_account" "cloudrun_runtime_sa" {
 # Basic roles for the runtime service account
 resource "google_project_iam_member" "cloudrun_runtime_sa_roles" {
   for_each = toset([
-    "roles/cloudsql.client",
     "roles/storage.objectViewer"
   ])
   
