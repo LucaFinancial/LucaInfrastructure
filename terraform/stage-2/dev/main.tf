@@ -5,6 +5,6 @@ module "webapp-cloud-run-lb" {
   project_id  = local.project_id
   region      = local.region
 
-  service_name = "luca-ledger-dev-webapp-run"
+  service_name = "lucaledger-dev-webapp-run"
   ssl_domains  = ["run-dev.lucaledger.app"]
 }
