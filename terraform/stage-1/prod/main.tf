@@ -22,9 +22,9 @@ module "webapp-v1" {
 
   service_name          = "lucaledger-prod-webapp-v1"
   service_account_name  = "build-sa-v1"
-  branch_pattern        = "^main$"
+  branch_pattern        = "release/v1"
   bucket_name           = "lucaledger-prod-webapp-v1"
-  trigger_name          = "lucaledger-prod-webapp-v1"
+  trigger_name          = "lucaledger-prod-v1"
   ssl_domains           = ["v1.lucaledger.app"]
 }
 
@@ -38,7 +38,7 @@ module "webapp-cloud-run" {
 
   service_name          = "lucaledger-prod-webapp-run"
   service_account_name  = "ll-prod-build-sa-cloudrun"
-  trigger_name          = "lucaledger-prod-webapp-trigger-run"
+  trigger_name          = "lucaledger-prod-run"
   ssl_domains           = ["run.lucaledger.app"]
-  repository_id         = "lucaledger-prod-webapp-run"
+  repository_id         = "lucaledger-prod-run"
 }
