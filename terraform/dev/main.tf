@@ -1,17 +1,17 @@
-module "webapp-cloud-run" {
-  source = "../services/webapp-cloud-run"
+# module "webapp-cloud-run" {
+  # source = "../services/webapp-cloud-run"
 
-  env             = local.env
-  project_id      = local.project_id
-  region          = local.region
-  branch_pattern  = local.branch_pattern
+  # env             = local.env
+  # project_id      = local.project_id
+  # region          = local.region
+  # branch_pattern  = local.branch_pattern
 
-  service_name          = "luca-ledger-dev-webapp-run"
-  service_account_name  = "build-sa-cloudrun"
-  trigger_name          = "luca-ledger-dev-webapp-trigger-run"
-  ssl_domains           = ["run-dev.lucaledger.app"]
-  repository_id         = "luca-ledger-dev-webapp-run"
-}
+  # service_name          = "luca-ledger-dev-webapp-run"
+  # service_account_name  = "build-sa-cloudrun"
+  # trigger_name          = "luca-ledger-dev-webapp-trigger-run"
+  # ssl_domains           = ["run-dev.lucaledger.app"]
+  # repository_id         = "luca-ledger-dev-webapp-run"
+# }
 
 module "webapp-gcs" {
   source = "../services/webapp-gcs"
@@ -38,7 +38,7 @@ module "webapp-gcs-v1-beta" {
   service_name          = "dev-webapp-gcs-v1-beta"
   service_account_name  = "build-sa-gcs-v1-beta"
   branch_pattern        = "release/v-1-9-5"
-  bucket_name           = "luca-ledger-dev-webapp-v1-beta"
+  bucket_name           = "lucaledger-dev-webapp-v1-beta"
   trigger_name          = "webapp-trigger-gcs-v1-beta"
   ssl_domains           = ["v1-beta.lucaledger.app"]
 }
