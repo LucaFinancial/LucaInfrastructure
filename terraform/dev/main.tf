@@ -1,17 +1,17 @@
-# module "webapp-cloud-run" {
-  # source = "../services/webapp-cloud-run"
+module "webapp-cloud-run" {
+  source = "../services/webapp-cloud-run"
 
-  # env             = local.env
-  # project_id      = local.project_id
-  # region          = local.region
-  # branch_pattern  = local.branch_pattern
+  env             = local.env
+  project_id      = local.project_id
+  region          = local.region
+  branch_pattern  = local.branch_pattern
 
-  # service_name          = "luca-ledger-dev-webapp-run"
-  # service_account_name  = "build-sa-cloudrun"
-  # trigger_name          = "luca-ledger-dev-webapp-trigger-run"
-  # ssl_domains           = ["run-dev.lucaledger.app"]
-  # repository_id         = "luca-ledger-dev-webapp-run"
-# }
+  service_name          = "luca-ledger-dev-webapp-run"
+  service_account_name  = "build-sa-cloudrun"
+  trigger_name          = "luca-ledger-dev-webapp-trigger-run"
+  ssl_domains           = ["run-dev.lucaledger.app"]
+  repository_id         = "luca-ledger-dev-webapp-run"
+}
 
 module "webapp-gcs" {
   source = "../services/webapp-gcs"
