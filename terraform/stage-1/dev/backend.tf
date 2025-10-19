@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "luca-ledger-devops-dev-tf-state"
-    prefix = "tf-state/dev"
+    bucket = "lucaledger-devops-dev-tf-state"
+    prefix = "tf-state/dev/stage-1"
   }
 }
