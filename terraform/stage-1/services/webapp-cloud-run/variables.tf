@@ -13,8 +13,13 @@ variable "region" {
   type        = string
 }
 
-variable "service_account_name_gcs" {
-  description = "Name of the GCS Cloud Build Serivce Account"
+variable "service_name" {
+  description = "The name of the Cloud Run service"
+  type        = string
+}
+
+variable "service_account_name" {
+  description = "Name of the Cloud Run Cloud Build Service Account"
   type        = string
 }
 
@@ -23,22 +28,23 @@ variable "branch_pattern" {
   type        = string
 }
 
-variable "bucket_name" {
-  description = "Name of the GCS bucket to deploy the app to"
-  type        = string
-}
-
 variable "trigger_name" {
   description = "Name of the trigger that deploys this service"
-  type        = string
-}
-
-variable "service_name_gcs" {
-  description = "The name of the GCS service"
   type        = string
 }
 
 variable "ssl_domains" {
   description = "A list of domains for the managed SSL certificate"
   type        = list(string)
+}
+
+variable "repository_id" {
+  description = "ID for the Artifact Registry repository"
+  type        = string
+}
+
+variable "repository_description" {
+  description = "Description for the Artifact Registry repository"
+  type        = string
+  default     = "Container registry for Luca Ledger web app"
 }
