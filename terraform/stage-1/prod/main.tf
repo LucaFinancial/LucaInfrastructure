@@ -28,18 +28,17 @@ module "webapp-v1" {
   ssl_domains           = ["v1.lucaledger.app"]
 }
 
-# module "webapp-cloud-run" {
-  # source = "../services/webapp-cloud-run"
+module "webapp-cloud-run" {
+  source = "../services/webapp-cloud-run"
 
-  # env           = local.env
-  # project_id    = local.project_id
-  # region        = local.region
-  # branch_pattern = local.branch_pattern
+  env            = local.env
+  project_id     = local.project_id
+  region         = local.region
+  branch_pattern = local.branch_pattern
 
-  # service_name         = "lucaledger-prod-webapp"
-  # service_account_name = "ll-prod-build-sa-cloudrun"
-
-  # repository_id  = "lucaledger-prod-webapp"
-
-  # ssl_domains = ["run.lucaledger.app"]
-# }
+  service_name          = "lucaledger-prod-webapp-run"
+  service_account_name  = "ll-prod-build-sa-cloudrun"
+  trigger_name          = "lucaledger-prod-webapp-trigger-run"
+  ssl_domains           = ["run.lucaledger.app"]
+  repository_id         = "lucaledger-prod-webapp-run"
+}
