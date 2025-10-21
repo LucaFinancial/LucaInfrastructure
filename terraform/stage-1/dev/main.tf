@@ -37,7 +37,7 @@ module "webapp-gcs-v1-beta" {
 
   service_name          = "lucaledger-dev-gcs-v1-beta"
   service_account_name  = "build-sa-gcs-v1-beta"
-  branch_pattern        = "release/v-1-9-5"
+  branch_pattern        = "v1/*"
   bucket_name           = "lucaledger-dev-v1-beta"
   trigger_name          = "lucaledger-dev-v1-beta"
   ssl_domains           = ["v1-beta.lucaledger.app"]
@@ -52,7 +52,7 @@ module "webapp-gcs-v2-beta" {
 
   service_name          = "lucaledger-dev-gcs-v2-beta"
   service_account_name  = "build-sa-gcs-v2-beta"
-  branch_pattern        = "release/v-2-0-0"
+  branch_pattern        = "v2/*"
   bucket_name           = "lucaledger-dev-v2-beta"
   trigger_name          = "lucaledger-dev-v2-beta"
   ssl_domains           = ["v2-beta.lucaledger.app"]
