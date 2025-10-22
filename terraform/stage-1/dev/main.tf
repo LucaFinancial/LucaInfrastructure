@@ -52,7 +52,7 @@ module "webapp-gcs-v2-beta" {
 
   service_name          = "lucaledger-dev-gcs-v2-beta"
   service_account_name  = "build-sa-gcs-v2-beta"
-  branch_pattern        = "v2/*"
+  branch_pattern        = "release/v-2-0-0"
   bucket_name           = "lucaledger-dev-v2-beta"
   trigger_name          = "lucaledger-dev-v2-beta"
   ssl_domains           = ["v2-beta.lucaledger.app"]
