@@ -10,7 +10,7 @@ module "webapp-gcs" {
   service_account_name = "ll-prod-build-sa-gcs"
   bucket_name    = "luca-ledger-devops-prod-webapp"
   trigger_name   = "lucaledger-prod-gcs"
-  ssl_domains = ["gcs.lucaledger.app", "lucaledger.app"]
+  ssl_domains = ["lucaledger.app"]
 }
 
 module "webapp-v1" {
