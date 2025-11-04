@@ -10,7 +10,7 @@ module "webapp-gcs" {
   service_account_name = "ll-prod-build-sa-gcs"
   bucket_name    = "luca-ledger-devops-prod-webapp"
   trigger_name   = "lucaledger-prod-gcs"
-  ssl_domains = ["gcs.lucaledger.app", "lucaledger.app"]
+  ssl_domains = ["lucaledger.app"]
 }
 
 module "webapp-v1" {
@@ -43,17 +43,18 @@ module "webapp-v2" {
   ssl_domains           = ["beta.lucaledger.app"]
 }
 
-module "webapp-cloud-run" {
-  source = "../services/webapp-cloud-run"
-
-  env            = local.env
-  project_id     = local.project_id
-  region         = local.region
-  branch_pattern = local.branch_pattern
-
-  service_name          = "lucaledger-prod-webapp-run"
-  service_account_name  = "ll-prod-build-sa-cloudrun"
-  trigger_name          = "lucaledger-prod-run"
-  ssl_domains           = ["run.lucaledger.app"]
-  repository_id         = "lucaledger-prod-run"
-}
+# module "webapp-cloud-run" {
+#   source = "../services/webapp-cloud-run"
+# 
+#   env            = local.env
+#   project_id     = local.project_id
+#   region         = local.region
+#   branch_pattern = local.branch_pattern
+# 
+#   service_name          = "lucaledger-prod-webapp-run"
+#   service_account_name  = "ll-prod-build-sa-cloudrun"
+#   trigger_name          = "lucaledger-prod-run"
+#   ssl_domains           = ["run.lucaledger.app"]
+#   repository_id         = "lucaledger-prod-run"
+# }
+# 
