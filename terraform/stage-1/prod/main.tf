@@ -37,7 +37,7 @@ module "webapp-v2" {
 
   service_name          = "lucaledger-prod-webapp-v2"
   service_account_name  = "build-sa-v2"
-  branch_pattern        = "^v2-beta$"
+  branch_pattern        = "^release/v-2-0-0$"
   bucket_name           = "lucaledger-prod-webapp-v2"
   trigger_name          = "lucaledger-prod-v2"
   ssl_domains           = ["beta.lucaledger.app"]
