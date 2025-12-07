@@ -5,11 +5,11 @@ module "webapp-gcs" {
   project_id    = local.project_id
   region        = local.region
 
-  service_name          = "lucaledger-prod-webapp-gcs"
-  service_account_name  = "build-sa-gcs"
+  service_name          = "lucaledger-prod-webapp"
+  service_account_name  = "lucaledger-prod-build-sa"
   branch_pattern        = "^main$"
   bucket_name           = "lucaledger-prod-webapp"
-  trigger_name          = "lucaledger-prod-gcs"
+  trigger_name          = "lucaledger-prod-webapp"
   ssl_domains           = ["lucaledger.app"]
 }
 
